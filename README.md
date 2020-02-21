@@ -54,4 +54,4 @@ It's that easy to play. The game won't let you make incorrect moves based on the
 
 ## What needs to be worked on?
 * As I mentioned, it's missing some essential chess features like pawn promotions, castling, and en passant.
-* AI.
+* AI. Currently, the game only supports local play between two humans. Even some rudimentary opponent that makes random valid moves would be better than this.

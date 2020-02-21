@@ -30,7 +30,7 @@ The basic logic for moving a piece goes like this:
 And then if somebody is in check, you have to go through the entire logic of checking to see whether they're just in check or if they're in checkmate. A whole lot of this logic relies on going through every single possible move that every single piece on the board can make, taking into account potential captures that can be made. All of this was very difficult to wrap my head around. I'm sure there's a better way to write a chess game. This is the type of game playable on incredibly hardware-restricted devices. I'll bet I just made the least optimized version of chess.
 
 ## How to run
-1. Clone the repository: https://github.com/Sundwalltanner/Ascii-Chess/blob/master/
+1. Clone the repository: https://github.com/Sundwalltanner/Ascii-Chess
 2. Open it up in your favorite terminal.
 3. Type and enter ```make```.
 4. Once the Makefile is done doing its thing and everything's compiled, execute it.

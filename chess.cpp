@@ -1,29 +1,30 @@
-// Tanner Sundwall, 2/22/19, CS410P, HW4: Chess
-//
-// chess.cpp
-//
-// The goal of this project is to create a program that utilizes what I've learned
-// from this course.
-//
-// My project in particular is a functional chess game playable from within
-// the command console.
-//
-// Features that made it:
-//      * All unique movesets of all 6 types of pieces.
-//      * Actual win condition of chess: not capturing the king, but checkmate.
-//      * Notify player of check.
-//      * Allow players to forfeit or draw.
-//      * Stalemate condition.
-//      * Prevent player from moving king into a position to be captured.
-//      * Tracker for captured and uncaptured pieces.
-//      * Navigatable command-based menus.
-//      * Other stuff.
-//
-// Features that didn't make it:
-//      * Special moves: castling, pawn promotion, or en passant.
-//      * Draw conditions: threefold repetition, fifty-move rule.
-//      * AI
-//      * Non-broken input parser. The current method in which input is parsed is very easy to segfault.
+/** Tanner Sundwall, 2/22/19, CS410P, HW4: Chess
+ *
+ * chess.cpp
+ *
+ * The goal of this project is to create a program that utilizes what I've learned
+ * from this course.
+ *
+ * My project in particular is a functional chess game playable from within
+ * the command console.
+ *
+ * Features that made it:
+ *      * All unique movesets of all 6 types of pieces.
+ *      * Actual win condition of chess: not capturing the king, but checkmate.
+ *      * Notify player of check.
+ *      * Allow players to forfeit or draw.
+ *      * Stalemate condition.
+ *      * Prevent player from moving king into a position to be captured.
+ *      * Tracker for captured and uncaptured pieces.
+ *      * Navigatable command-based menus.
+ *      * Other stuff.
+ *
+ * Features that didn't make it:
+ *      * Special moves: castling, pawn promotion, or en passant.
+ *      * Draw conditions: threefold repetition, fifty-move rule.
+ *      * AI
+ *      * Non-broken input parser. The current method in which input is parsed is very easy to segfault.
+ */
 
 #include "board.h"
 #include <iostream>
@@ -33,16 +34,16 @@ bool checkOptionSelected(int option, int optionCount);
 void printInstructions();
 void printPieceInfo();
 
-int main(int argc, char** argv)
+int main(int argc, char **argv)
 {
     // This is the entire chess game's loop. It can only be stopped by inputting
     // the option for "Exit" from the main menu.
     //
     // Due to everything in here using cin >> ..., it's rather easy to break. Sorry about that.
-    for(;;)
+    for (;;)
     {
-        int option = 0;         // Option selected by the user.
-        int optionCount = 0;    // Number of options available for user to select.
+        int option = 0;      // Option selected by the user.
+        int optionCount = 0; // Number of options available for user to select.
 
         // Main menu loop.
         do
@@ -54,56 +55,62 @@ int main(int argc, char** argv)
                  << "  " << ++optionCount << ". Play against human\n"
                  << "  " << ++optionCount << ". Play against AI\n"
                  << "  " << ++optionCount << ". Instructions\n"
-                 << "  " << ++optionCount << ". Exit\n"
+                 << "  " << "0. Exit\n"
                  << "  : ";
             cin >> option;
             cin.ignore();
 
             // Exit chess program.
-            if(option == optionCount)
+            if (!option)
             {
                 return 0;
             }
 
-        } while(!checkOptionSelected(option, optionCount));
+        } while (!checkOptionSelected(option, optionCount));
 
         // Play chess against a human.
-        if(option == 1)
+        if (option == 1)
         {
             Board board;
             board.play_human();
         }
 
         // Play chess against AI.
-        else if(option == 2)
+        else if (option == 2)
         {
             Board board;
             board.play_ai();
         }
 
         // Print chess instructions.
-        else if(option == 3)
+        else if (option == 3)
         {
             printInstructions();
         }
-
     }
 }
 
-// Ensures that the user inputs an option within the range of options available.
+/**
+ * Ensures that the user inputs an option within the range of options available.
+ * @param option Option chosen by the user.
+ * @param optionCount Number of options available to pick from.
+ * @return Whether or not the user inputted a valid option value.
+ */
 bool checkOptionSelected(int option, int optionCount)
 {
-    if(option > 0 && option < optionCount)
+    if (option > 0 && option <= optionCount)
     {
         return true;
     }
 
-    cout << "\nInvalid user input. Please input a number between 1 and " << optionCount << " next time." << endl;
+    cout << "\nInvalid user input. Please input a number between 0 and " << optionCount << " next time." << endl;
     pressEnterToContinue();
     return false;
 }
 
-// Print chess instructions.
+/**
+ *  Print chess instructions.
+ */
 void printInstructions()
 {
     int option = 0;
@@ -111,7 +118,7 @@ void printInstructions()
 
     // Main loop for instructions menu.
     // Will loop forever until user inputs command for "Exit".
-    for(;;)
+    for (;;)
     {
         do
         {
@@ -121,27 +128,26 @@ void printInstructions()
                  << "Please input a number to select an option below:\n"
                  << "  " << ++optionCount << ". The Pieces\n"
                  << "  " << ++optionCount << ". How to Play\n"
-                 << "  " << ++optionCount << ". Exit\n"
+                 << "  " << "0. Exit\n"
                  << "  : ";
             cin >> option;
             cin.ignore();
 
             // Exit printInstructions function
-            if(option == optionCount)
+            if (!option)
             {
                 return;
             }
-        } while(!checkOptionSelected(option, optionCount));
+        } while (!checkOptionSelected(option, optionCount));
 
         // Bring us to menu for displaying info about each chess piece.
-        if(option == 1)
+        if (option == 1)
         {
             printPieceInfo();
-
         }
 
         // Print directions regarding how to actually play this chess game.
-        else if(option == 2)
+        else if (option == 2)
         {
             cout << "\nTwo players will take turns moving their pieces.\n"
                  << "The game will indicate whose turn (white or black) it is.\n"
@@ -159,7 +165,9 @@ void printInstructions()
     }
 }
 
-// Print piece info.
+/**
+ *  Print piece info.
+ */
 void printPieceInfo()
 {
     int option = 0;
@@ -167,7 +175,7 @@ void printPieceInfo()
 
     // Main loop for piece info menu.
     // Will loop forever like the other menus until the user inputs command for "Exit".
-    for(;;)
+    for (;;)
     {
         do
         {
@@ -181,21 +189,21 @@ void printPieceInfo()
                  << "  " << ++optionCount << ". The Bishops\n"
                  << "  " << ++optionCount << ". The Knights\n"
                  << "  " << ++optionCount << ". The Pawns\n"
-                 << "  " << ++optionCount << ". Exit\n"
+                 << "  " << "0. Exit\n"
                  << "  : ";
             cin >> option;
             cin.ignore();
 
             // Exit printPieceInfo function
-            if(option == optionCount)
+            if (!option)
             {
                 return;
             }
-            
-        } while(!checkOptionSelected(option, optionCount));
+
+        } while (!checkOptionSelected(option, optionCount));
 
         // Print info about King.
-        if(option == 1)
+        if (option == 1)
         {
             cout << "\nThe King\n"
                  << "The most important piece in the game of chess.\n"
@@ -206,7 +214,7 @@ void printPieceInfo()
         }
 
         // Print info about Queen.
-        else if(option == 2)
+        else if (option == 2)
         {
             cout << "\nThe Queen\n"
                  << "Moves any number of vacant squares in any direction." << endl;
@@ -214,7 +222,7 @@ void printPieceInfo()
         }
 
         // Print info about Rook.
-        else if(option == 3)
+        else if (option == 3)
         {
             cout << "\nThe Rooks\n"
                  << "Move any number of vacant squares forwards, backwards,\n"
@@ -223,7 +231,7 @@ void printPieceInfo()
         }
 
         // Print info about Bishop.
-        else if(option == 4)
+        else if (option == 4)
         {
             cout << "\nThe Bishops\n"
                  << "Move any number of vacant squares diagonally in a straight line." << endl;
@@ -231,7 +239,7 @@ void printPieceInfo()
         }
 
         // Print info about Knight.
-        else if(option == 5)
+        else if (option == 5)
         {
             cout << "\nThe Knights\n"
                  << "Move on an extended diagonal from one corner of any 2x3 rectangle\n"
@@ -240,7 +248,7 @@ void printPieceInfo()
         }
 
         // Print info about Pawn.
-        else if(option == 6)
+        else if (option == 6)
         {
             cout << "\nThe Pawns\n"
                  << "Move forward exactly one space, or two spaces when on their starting\n"
